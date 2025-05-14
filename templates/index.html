@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>WebCV Screw Detection</title>
+  <style>
+    label { font-family: sans-serif; margin-top: 8px; display: block; }
+    input[type=range] { width: 80%; }
+  </style>
+</head>
+<body>
+  <h2>Screw Hole Detection Web UI</h2>
+  <img id="video" src="{{ url_for('video_feed') }}" width="640"><br><br>
+
+  <!-- วนสร้าง slider ตาม key ใน params -->
+  {% for key, label in {
+      'dp_x10':'DP x10', 'conf':'Confidence', 'minR':'Min Radius',
+      'maxR':'Max Radius','minDist':'Min Distance',
+      'fil_hole':'Filter Hole','fil_edge':'Filter Edge','con2':'Edge Thresh'
+  }.items() %}
+    <label>{{ label }}: <span id="{{ key }}_val">{{ params[key] }}</span></label>
+    <input type="range"
+           id="{{ key }}"
+           min="0" max="40"
+           value="{{ params[key] }}">
+  {% endfor %}
+
+  <button id="saveBtn">Save DXF</button>
+
+  <script>
+    const saveBtn = document.getElementById('saveBtn');
+    const keys = ['fil_edge','dp_x10','conf','minR','maxR','minDist','fil_hole','con2'];
+
+    function sendParams() {
+      let data = {};
+      keys.forEach(k => data[k] = document.getElementById(k).value);
+      fetch('/update_params', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+    }
+
+    keys.forEach(k => {
+      const slider = document.getElementById(k);
+      const display = document.getElementById(k + '_val');
+      slider.oninput = e => {
+        display.textContent = e.target.value;
+        sendParams();
+      };
+    });
+
+    saveBtn.onclick = () => {
+      fetch('/save', { method: 'POST' })
+        .then(() => {
+          // หลัง toggle ให้ reload หน้าเพื่ออัปเดตข้อความปุ่ม
+          location.reload();
+        });
+    };
+  </script>
+</body>
+</html>
