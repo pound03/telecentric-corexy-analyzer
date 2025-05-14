@@ -33,9 +33,9 @@ The system captures high-resolution PCB images, merges them, detects board featu
 ├── BC_merge_image.py     # Combines 4 images into 1 and applies Gaussian blur
 ├── C_web_image.py        # Flask app for UI, feature detection, and DXF export
 ├── D_chat.py             # Automates ChatGPT web interface interaction
-├── /save/sub_image/      # Folder for temporary image tiles
-├── /save/full_image.jpg  # Merged board image
-├── /search/board.jpg     # Image sent to ChatGPT
+├── sub_image             # Folder for temporary image tiles
+├── full_image.jpg        # Merged board image
+├── board.jpg             # Image sent to ChatGPT
 ├── output.dxf            # Contour export
 ```
 
@@ -103,17 +103,6 @@ pip install opencv-python flask pyserial pyautogui ezdxf
 
 ---
 
-## 🧠 ChatGPT Integration
-
-After stitching and processing, `board.jpg` is created and:
-- Mouse automation types "what is this board" into ChatGPT (web)
-- AI suggests board type, model, or IC family
-- User gets real-time response without manual typing
-
-> 🔒 *Future version may switch to API-based GPT interaction*
-
----
-
 ## 📤 Output Files
 
 | File | Description |
@@ -131,18 +120,3 @@ After stitching and processing, `board.jpg` is created and:
 - Switch to OpenAI API for cleaner integration
 - Add part number recognition (OCR)
 - PDF report export with DXF overlay
-
----
-
-## 👤 Author
-
-**Weerapat Supapornopas**  
-Control Engineering, Chulalongkorn University  
-📧 Contact: [Your Email]
-
----
-
-## 📝 License
-
-This project is intended for **research and prototyping** only.  
-Please contact the author for permission if used commercially.
